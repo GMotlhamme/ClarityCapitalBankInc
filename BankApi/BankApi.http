@@ -1,0 +1,38 @@
+@BankApi_HostAddress = http://localhost:5288
+
+GET {{BankApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+POST {{BankApi_HostAddress}}/api/Auth/Register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "FullName": "Malibonge Mezzanga",
+    
+    "Username": "Ziga",
+
+    "AccountNumber": "02sw4994",
+
+    "IdNumber" : "066882244",
+
+    "Password" : "mash"
+}
+
+###
+POST {{BankApi_HostAddress}}/api/Auth/Login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "FullName": "Malibonge Mezzanga",
+    
+    "Username": "Ziga",
+
+    "AccountNumber": "02sw4994",
+
+    "IdNumber" : "066882244",
+
+    "Password" : "mash"
+}
