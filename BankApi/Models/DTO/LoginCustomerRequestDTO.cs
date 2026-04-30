@@ -1,4 +1,6 @@
-﻿namespace BankApi.Models.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BankApi.Models.DTO
 {
     public class LoginCustomerRequestDTO
     {
@@ -10,6 +12,9 @@
 
         public string IdNumber { get; set; }
 
+        [Required]
+        [MinLength(8)]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$", ErrorMessage = "Incorrect input")]
         public string Password { get; set; }
     }
 }

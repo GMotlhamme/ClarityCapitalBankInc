@@ -49,32 +49,34 @@ namespace BankApi.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginCustomerRequestDTO dTO)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var validUser = await _bankApiDbContext.Customers.FirstOrDefaultAsync(x => x.IdNumber == dTO.IdNumber);
+                return BadRequest(ModelState);
+            }
+
+
+            var validUserCheck = await _bankApiDbContext.Customers.FirstOrDefaultAsync(x => x.IdNumber == dTO.IdNumber);
 
                 
-                if (validUser != null) {
+            if (validUserCheck != null) {
 
-                    var verifiedPassword = BCrypt.Net.BCrypt.Verify(dTO.Password, validUser.Password);
-
-
-                    return Ok($"made it to this point {verifiedPassword}");
+                var verifiedPassword = BCrypt.Net.BCrypt.Verify(dTO.Password, validUserCheck.Password);
 
 
+                return Ok($"we can now verify the password after validations. Password: {verifiedPassword}");
 
 
 
 
 
-                }
-                else
-                {
-                    return BadRequest(ModelState);
-                }
+
 
             }
-            return BadRequest(ModelState);
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
         }
 
     }

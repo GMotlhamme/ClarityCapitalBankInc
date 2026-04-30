@@ -9,15 +9,15 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "FullName": "Malibonge Mezzanga",
+    "FullName": "Karabo Kgona",
     
     "Username": "Ziga",
 
-    "AccountNumber": "02sw4994",
+    "AccountNumber": "021234994",
 
-    "IdNumber" : "066882244",
+    "IdNumber" : "0668822445192",
 
-    "Password" : "mash"
+    "Password" : "MashB8t_"
 }
 
 ###
@@ -26,13 +26,13 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "FullName": "Malibonge Mezzanga",
+    "FullName": "Karabo Kgona",
     
     "Username": "Ziga",
 
-    "AccountNumber": "02sw4994",
+    "AccountNumber": "021234994",
 
-    "IdNumber" : "066882244",
+    "IdNumber" : "0668822445192",
 
-    "Password" : "mash"
+    "Password" : "MashB8t_"
 }
