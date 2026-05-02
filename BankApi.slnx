@@ -1,3 +1,7 @@
 <Solution>
   <Project Path="BankApi/BankApi.csproj" />
+  <Project Path="Frontend/frontend.esproj">
+    <Build />
+    <Deploy />
+  </Project>
 </Solution>
