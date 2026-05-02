@@ -9,6 +9,10 @@ namespace BankApi.Models.DTO
         public string FullName { get; set; }
 
         [Required]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only letters allowed")]
+        public string Username { get; set; }
+
+        [Required]
         [RegularExpression(@"^\d{13}$", ErrorMessage = "ID must be 13 digits")]
         public string IdNumber { get; set; }
 
