@@ -1,8 +1,10 @@
 ﻿using BankApi.Data;
+using BankApi.Interfaces;
 using BankApi.Models.Domain;
 using BankApi.Models.DTO;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,38 +12,68 @@ namespace BankApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class AuthController : ControllerBase
     {
-        private readonly BankApiDbContext _bankApiDbContext;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(BankApiDbContext bankApiDbContext){
-            _bankApiDbContext = bankApiDbContext;
+        public AuthController(UserManager<AppUser> userManager, ITokenService tokenService)
+        {
+            _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisteringDTO registeringDTO)
         {
-            if (ModelState.IsValid)
+
+            try
             {
 
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword($"{registeringDTO.Password}");
+                if (!ModelState.IsValid)
+                {
+                return BadRequest(ModelState);
+                }
 
-            var registerCustomerDomainModel = new Customer
-            {
-                FullName = registeringDTO.FullName,
-                Username = registeringDTO.Username,
-                IdNumber = registeringDTO.IdNumber,
-                AccountNumber = registeringDTO.AccountNumber,
-                Password = hashedPassword
-            };
+                var existingUser = await _userManager.FindByEmailAsync(registeringDTO.Email);
 
-            await _bankApiDbContext.Customers.AddAsync(registerCustomerDomainModel);
-            await _bankApiDbContext.SaveChangesAsync();
+                if(existingUser != null)
+                {
+                    return BadRequest("This email is already registered. Please log in");
+                }
 
-            return Ok("user created");
+                var user = new AppUser
+                {
+                    FullName = registeringDTO.FullName,
+                    UserName = registeringDTO.Username,
+                    IdNumber = registeringDTO.IdNumber,
+                    AccountNumber = registeringDTO.AccountNumber,
+                    Email = registeringDTO.Email
+                };
+
+                //hashing and salting the password using bcrypt
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword($"{registeringDTO.Password}");
+
+                //saving changes to database
+                 var result = await _userManager.CreateAsync(user);
+
+                    if (!result.Succeeded)
+                    {
+                        return BadRequest(result.Errors);
+                    }
+
+
+                    // Assign role
+                    await _userManager.AddToRoleAsync(user, "Customer");
+
+                return Ok("user created");
             }
-            return BadRequest(ModelState);
+            catch(Exception ex) 
+            {
+                    return StatusCode(500, ex);
+            }
         }
 
 
@@ -55,27 +87,32 @@ namespace BankApi.Controllers
             }
 
 
-            var validUserCheck = await _bankApiDbContext.Customers.FirstOrDefaultAsync(x => x.IdNumber == dTO.IdNumber);
-
-                
-            if (validUserCheck != null) {
-
-                var verifiedPassword = BCrypt.Net.BCrypt.Verify(dTO.Password, validUserCheck.Password);
+            var user = await _userManager.FindByEmailAsync(dTO.Email);
 
 
-                return Ok($"we can now verify the password after validations. Password: {verifiedPassword}");
-
-
-
-
-
-
-
-            }
-            else
+            if (user == null) 
             {
-                return BadRequest(ModelState);
+                return Unauthorized("Invalid credentials");
             }
+
+
+            var verifiedPassword = BCrypt.Net.BCrypt.Verify(dTO.Password, user.PasswordHash);
+                
+
+            //if the password is wrong then we cut the function using this conditional
+            if (!verifiedPassword)
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+
+            return Ok(new LoginCustomerResponseDTO
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                Token = await _tokenService.CreateToken(user)
+            });
+            
 
         }
 

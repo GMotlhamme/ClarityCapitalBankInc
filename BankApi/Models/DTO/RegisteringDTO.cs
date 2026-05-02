@@ -22,6 +22,10 @@ namespace BankApi.Models.DTO
         public string IdNumber { get; set; }
 
         [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
         [MinLength(8, ErrorMessage = "must at least be 8 characters long")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$", ErrorMessage = "Must contain at least one uppercase, lowercase, number and special character")]
         public string Password { get; set; }

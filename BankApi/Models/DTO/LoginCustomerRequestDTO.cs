@@ -12,6 +12,9 @@ namespace BankApi.Models.DTO
 
         public string IdNumber { get; set; }
 
+        [EmailAddress]
+        public string Email { get; set; }
+
         [Required]
         [MinLength(8)]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$", ErrorMessage = "Incorrect input")]

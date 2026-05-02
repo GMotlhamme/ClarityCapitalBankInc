@@ -9,13 +9,15 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "FullName": "Karabo Kgona",
+    "FullName": "Malebo Moropa",
     
-    "Username": "Ziga",
+    "Username": "DoubleM",
 
-    "AccountNumber": "021234994",
+    "AccountNumber": "072234994",
 
-    "IdNumber" : "0668822445192",
+    "IdNumber" : "0611862445192",
+
+    "Email" : "moropam@gmail.com",
 
     "Password" : "MashB8t_"
 }
@@ -26,13 +28,14 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "FullName": "Karabo Kgona",
+    "FullName": "Malebo Moropa",
     
-    "Username": "Ziga",
+    "Username": "DoubleM",
 
-    "AccountNumber": "021234994",
+    "AccountNumber": "072234994",
 
-    "IdNumber" : "0668822445192",
+    "IdNumber" : "0611862445192",
+    "Email" : "mOropam@gmail.com",
 
     "Password" : "MashB8t_"
 }

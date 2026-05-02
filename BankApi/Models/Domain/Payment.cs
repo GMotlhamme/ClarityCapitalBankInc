@@ -19,22 +19,22 @@ namespace BankApi.Models.Domain
 
         public string SwiftCode { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public bool? IsVerified { get; set; }
 
-        //Which employee verified this transaction
-        public Guid? VerifiedByEmployeeId { get; set; }
+        //Employee relationship
+        public string? VerifiedByEmployeeId { get; set; }
 
         [ForeignKey("VerifiedByEmployeeId")]
-        public Employee VerifiedByEmployee { get; set; }
+        public AppUser? VerifiedByEmployee { get; set; }
 
         public DateTime? VerifiedAt { get; set; }
 
-        //which customer made this transaction
-        public Guid CustomerId { get; set; }
+        //Customer Relationship
+        public string CustomerId { get; set; }
 
         [ForeignKey("CustomerId")]
-        public Customer Customer { get; set; }
+        public AppUser Customer { get; set; }
     }
 }
