@@ -18,7 +18,6 @@ export default function Login(){
                 username,
                 accountNumber
             });
-            
             localStorage.setItem("token", response.data.token);
             navigate("/PaymentGate");
         } catch (error) {
@@ -29,7 +28,7 @@ export default function Login(){
         <>
         <section>
             <div className="flex flex-col items-center justify-center gap-4 pt-8 transition-all duration-300">
-            <img src="/Claritylogo.png" className="object-contain h-40" alt="logo" />
+            <img src="./ClarityLogo.png" className="object-contain h-40" alt="logo" />
 
             </div>
 

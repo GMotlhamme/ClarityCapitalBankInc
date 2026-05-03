@@ -34,7 +34,7 @@ export default function Register() {
         <>
             <section className="px-8 mb-20 lg:p-18 lg:px-120 md:p-10 text-base md:text-lg lg:text-2xl">
                 <div className="flex justify-center -m-8 -mt-12">
-                    <img src="/ClarityCapital.png" className="object-contain h-80" alt="logo" />
+                    <img src="./ClarityCapital.png" className="object-contain h-80" alt="logo" />
                 </div>
                 <form className="-mt-14 " onSubmit={registerUser}>
                     <div className="flex flex-col gap-2 mb-4">

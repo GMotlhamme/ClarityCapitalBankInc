@@ -4,7 +4,7 @@ export default function Landing() {
     return (
         <>
             <section className="text-blue-950 text-base w-full h-full flex flex-col lg:flex-row lg:items-center lg:justify-center gap-8">
-                <img src="/ClarityCapital.png" className="object-contain md:h-120 lg:h-150" alt="logo" />
+                <img src="./ClarityCapital.png" className="object-contain md:h-120 lg:h-150" alt="logo" />
 
                 <section className="flex flex-col items-center text-center lg:w-1/3 -mt-18 md:justify-start lg:mt-auto ">
 
