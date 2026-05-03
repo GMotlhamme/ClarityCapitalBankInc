@@ -13,7 +13,7 @@ namespace BankApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Employee")]
     public class PaymentsController : ControllerBase
     {
         private readonly BankApiDbContext _context;
@@ -75,16 +75,7 @@ namespace BankApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Payments
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Payment>> PostPayment(Payment payment)
-        {
-            _context.Payments.Add(payment);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
-        }
+        
 
         // DELETE: api/Payments/5
         [HttpDelete("{id}")]
