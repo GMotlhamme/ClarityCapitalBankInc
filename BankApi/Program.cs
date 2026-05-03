@@ -68,7 +68,8 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
-
+//Ensuring that all traffic is served over SSL
+app.UseHttpsRedirection();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -5,29 +5,29 @@ namespace BankApi.Models.DTO
     public class RegisteringDTO
     {
         [Required]
-        [StringLength(100)]
-        [RegularExpression(@"^[a-zA-Z\s]+$")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only letters allowed")]
         public string FullName { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only letters allowed")]
         public string Username { get; set; }
 
         [Required]
-        [StringLength(20)]
-        public string AccountNumber { get; set; }
-
-        [Required]
-        [RegularExpression(@"^\d{13}$")]
+        [RegularExpression(@"^\d{13}$", ErrorMessage = "ID must be 13 digits")]
         public string IdNumber { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d{10,12}$", ErrorMessage = "Invalid account number")]
+        public string AccountNumber { get; set; }
+
+        [Required]
         [EmailAddress]
+
         public string Email { get; set; }
 
         [Required]
-        [MinLength(8, ErrorMessage = "must at least be 8 characters long")]
-        [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$", ErrorMessage = "Must contain at least one uppercase, lowercase, number and special character")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).{8,}$",
+            ErrorMessage = "Password must be 8+ chars, include uppercase & number")]
         public string Password { get; set; }
     }
 }
