@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router"
-// import ProtectedRoute from "./utils/ProtectedRoute"
+import ProtectedRoute from "./utils/ProtectedRoute"
 import Login from "./pages/LogIn"
 import Register from "./pages/Register"
 import PaymentGate from "./pages/PaymentGate"
@@ -15,8 +15,8 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           
-            <Route path="/PaymentGate" element={<PaymentGate />} />
-            {/* <Route path="/PaymentGate" element={<ProtectedRoute><PaymentGate /></ProtectedRoute>} /> */}
+            {/* <Route path="/PaymentGate" element={<PaymentGate />} /> */}
+            <Route path="/PaymentGate" element={<ProtectedRoute><PaymentGate /></ProtectedRoute>} />
 
        
         </Routes>
