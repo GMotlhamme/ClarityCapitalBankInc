@@ -4,13 +4,15 @@ namespace BankApi.Models.DTO
 {
     public class LoginCustomerRequestDTO
     {
-        public string FullName { get; set; }
-
+        public string? FullName { get; set; }
+        
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only letters allowed")]
         public string Username { get; set; }
-
+        
+        [RegularExpression(@"^\d{10,12}$", ErrorMessage = "Invalid")]
         public string AccountNumber { get; set; }
 
-        public string IdNumber { get; set; }
+        public string? IdNumber { get; set; }
 
         [EmailAddress]
         public string Email { get; set; }
