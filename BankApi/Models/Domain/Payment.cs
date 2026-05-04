@@ -19,6 +19,8 @@ namespace BankApi.Models.Domain
 
         public string SwiftCode { get; set; }
 
+        public string? BeneficiaryName { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public bool? IsVerified { get; set; }

@@ -52,7 +52,8 @@ namespace BankApi.Controllers
                 Currency = p.Currency,
                 SwiftCode = p.SwiftCode,
                 CreatedAt = p.CreatedAt,
-                IsVerified = p.IsVerified
+                IsVerified = p.IsVerified,
+                BeneficiaryName = p.BeneficiaryName,
             });
 
             return Ok(response);
