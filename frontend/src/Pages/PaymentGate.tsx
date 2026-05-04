@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function PaymentGate() {
     const [loader, setLoader] = useState(false);
+    const navigate = useNavigate();
     async function handlePayment(e: React.FormEvent) {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
@@ -22,17 +24,24 @@ export default function PaymentGate() {
                     SwiftCode
                 });
                 console.log("Payment successful:", response.data);
+                navigate("/Home");
                 setLoader(false);
             }catch( error){
                 console.error("Payment failed:", error);
-                setLoader(false);
+                if(axios.isAxiosError(error) && error.response?.status === 401) {
+                localStorage.clear();
+                navigate("/Login");
+                return;
+            }
+            setLoader(false);
+                
             }
     }
 
     return (
         <>
             <section className="flex flex-col gap-8 p-8 lg:py-20 lg:px-80">
-                <form className="border-2 border-neutral-700 p-8 rounded" action="" onSubmit={handlePayment}>
+                <form className="border-2 border-neutral-700 p-8 rounded" onSubmit={handlePayment}>
                         <div className="flex flex-col gap-2 mb-4">
                             <label htmlFor="">Beneficiary Name</label>
                             <input className="p-4 border-2 border-neutral-700 rounded" name="beneficiaryName" required type="text" />
@@ -42,8 +51,10 @@ export default function PaymentGate() {
                         <input className="p-4 border-2 border-neutral-700 rounded" name="Amount" required type="number" />
                     </div>
                     <div className="flex flex-col gap-2 mb-4">
-                        <label htmlFor="">Account Number</label>
-                        <input className="p-4 border-2 border-neutral-700 rounded" name="PayeeAccountNumber" required type="number" />
+                        <label htmlFor="">Account Number (10-12 digits)</label>
+                        <input className="p-4 border-2 border-neutral-700 rounded" name="PayeeAccountNumber" maxLength={12} required type="tel" pattern="[0-9]{10,12}" onInput={(e) => {
+                                e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); // Ensure only numbers
+                            }} />
                     </div>
                     <div className="flex flex-col gap-2 mb-4">
                         <label htmlFor="">Currency</label>
@@ -51,8 +62,12 @@ export default function PaymentGate() {
                             <option  disabled>Select Currency</option>
                             <option  value="EUR">EUR</option>
                             <option  value="USD">USD</option>
-                            <option  value="YEN">YEN</option>
-                            <option  value="CAD">CAD</option>
+                            <option  value="GBP">GBP</option>
+                            <option  value="JPY">JPY</option>
+                            <option  value="AUD">AUD</option>
+                            <option  value="CHF">CHF</option>
+                            <option  value="INR">INR</option>
+
                         </select>
                     </div>
                     <div className="flex flex-col  gap-2 mb-4">
@@ -65,11 +80,11 @@ export default function PaymentGate() {
                    
                         <div className="flex flex-col gap-2 mb-4">
                             <label htmlFor="">Branch Code</label>
-                            <input className="p-4 border-2 border-neutral-700 rounded"  required type="text" />
+                            <input className="p-4 border-2 border-neutral-700 rounded" maxLength={5}  required type="text" />
                         </div>
                         <div className="flex flex-col gap-2 mb-4">
                             <label htmlFor="">Swift code</label>
-                            <input className="p-4 border-2 border-neutral-700 rounded" name="SwiftCode" type="text" required />
+                            <input className="p-4 border-2 border-neutral-700 rounded" maxLength={11} minLength={8} name="SwiftCode" type="text" required />
                         </div>
                         <button disabled={loader} className="flex justify-center w-full border-2 border-blue-800 text-blue-950 rounded p-4 cursor-pointer">{loader ? "Processing..." : "Pay Now"}</button>
                     </form>
