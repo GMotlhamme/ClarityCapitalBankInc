@@ -10,18 +10,17 @@ function App() {
 
   return (
     <>
-       <BrowserRouter>
+      <BrowserRouter>
         <Routes>
-                  <Route path="/" element={<Landing />} />
-                  <Route path="/Login" element={<Login />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
-          
-            {/* <Route path="/PaymentGate" element={<PaymentGate />} /> */}
-                  <Route path="/PaymentGate" element={<ProtectedRoute><PaymentGate /></ProtectedRoute>} />
 
-                  <Route path="/Home" element={<Home />} />
 
-       
+          <Route path="/Home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/PaymentGate" element={<ProtectedRoute><PaymentGate /></ProtectedRoute>} />
+
+
         </Routes>
       </BrowserRouter>
     </>
