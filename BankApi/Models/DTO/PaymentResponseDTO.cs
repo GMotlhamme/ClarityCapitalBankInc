@@ -15,6 +15,6 @@
 
         public bool? IsVerified { get; set; }
 
-        public string? BeneficiaryName { get; set; }
+        public string BeneficiaryName { get; set; }
     }
 }

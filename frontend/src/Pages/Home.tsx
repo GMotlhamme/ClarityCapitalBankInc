@@ -28,6 +28,7 @@ interface Transaction {
 
             const data = await response.json();
             setTransactions(data);
+            console.log("Fetched transactions:", data);
         } catch (error) {
             console.error("Error fetching transactions", error);
         } finally {

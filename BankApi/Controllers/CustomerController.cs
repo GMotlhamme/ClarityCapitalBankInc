@@ -53,7 +53,7 @@ namespace BankApi.Controllers
                 SwiftCode = p.SwiftCode,
                 CreatedAt = p.CreatedAt,
                 IsVerified = p.IsVerified,
-                BeneficiaryName = p.BeneficiaryName,
+                BeneficiaryName = p.BeneficiaryName
             });
 
             return Ok(response);
@@ -83,7 +83,8 @@ namespace BankApi.Controllers
                 Currency = dTO.Currency,
                 SwiftCode = dTO.SwiftCode,
                 PayeeAccountNumber = dTO.PayeeAccountNumber,
-                CustomerId = userId
+                CustomerId = userId,
+                BeneficiaryName = dTO.BeneficiaryName
             };
 
             await _context.Payments.AddAsync(paymentModel);
