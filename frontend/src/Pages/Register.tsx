@@ -66,10 +66,10 @@ export default function Register() {
                         <input className="p-4 border-2 border-neutral-700 rounded" name="password" required type="password" />
                     </div>
 
-                    <button className="w-full mt-4 p-4 border-2 rounded text-xl text-blue-950 border-blue-900">Create Account!</button>
+                    <button className="w-full mt-4 p-4 border-2 rounded text-xl text-blue-950 border-blue-900 cursor-pointer hover:bg-blue-700 hover:text-white transition delay-75">Create Account!</button>
                 </form>
                 <div className="flex mt-4">
-                    <Link to="/Login" className="text-center w-full cursor-pointer">Already registered? Sign In</Link>
+                    <Link to="/Login" className="text-center w-full cursor-pointer hover:bg-blue-700 hover:text-white transition delay-200 py-2 rounded">Already registered? Sign In</Link>
                 </div>
             </section>
         </>

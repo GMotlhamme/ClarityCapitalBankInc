@@ -7,6 +7,8 @@ interface Transaction {
     currency: string;
     payeeAccountNumber: string;
     createdAt?: string;
+    beneficiaryName?: string;
+    verified: boolean;
 }
 
  export default function Home()  {
@@ -60,7 +62,7 @@ interface Transaction {
 
                 <button
                     onClick={handleLogout}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                    className="bg-black cursor-pointer text-white px-4 py-2 rounded"
                 >
                     Logout
                 </button>
@@ -70,9 +72,9 @@ interface Transaction {
             <div className="mb-6">
                 <button
                     onClick={() => navigate("/PaymentGate")}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+                    className="border-2 border-blue-700 text-blue-900 cursor-pointer hover:bg-blue-700 hover:text-white transition delay-75 px-4 py-2 rounded"
                 >
-                    + Create Transaction
+                     Create Transaction
                 </button>
             </div>
 
@@ -84,19 +86,22 @@ interface Transaction {
 
                 {loading ? (
                     <div className="flex justify-center">
-                        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
                     </div>
                 ) : transactions.length === 0 ? (
                     <p className="text-gray-500 text-center">
                         No transactions found.
                     </p>
                 ) : (
-                    <table className="w-full text-left">
+                    <table className="w-full h-full text-left">
                         <thead>
                             <tr className="border-b">
                                 <th className="py-2">Amount</th>
                                 <th>Currency</th>
                                 <th>Payee</th>
+                                <th>Date</th>
+                                <th>Verified</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -104,9 +109,11 @@ interface Transaction {
                                 <tr key={t.id} className="border-b">
                                     <td className="py-2">{t.amount}</td>
                                     <td>{t.currency}</td>
-                                    <td>{t.payeeAccountNumber}</td>
+                                    <td>{t.beneficiaryName}</td>
+                                    <td>{t.createdAt?.split("T")[0]}</td>
+                                    <td>{t.verified ? "Yes" : "Processing"}</td>
                                 </tr>
-                            ))}
+                            )).toReversed()}
                         </tbody>
                     </table>
                 )}

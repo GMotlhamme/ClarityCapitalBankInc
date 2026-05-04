@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function PaymentGate() {
     const [loader, setLoader] = useState(false);
+    const navigate = useNavigate();
     async function handlePayment(e: React.FormEvent) {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
@@ -22,6 +24,7 @@ export default function PaymentGate() {
                     SwiftCode
                 });
                 console.log("Payment successful:", response.data);
+                navigate("/Home");
                 setLoader(false);
             }catch( error){
                 console.error("Payment failed:", error);

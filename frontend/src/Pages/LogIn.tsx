@@ -1,8 +1,10 @@
 import axios from "axios";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 export default function Login(){
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
      async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
@@ -11,7 +13,7 @@ export default function Login(){
         const username = formData.get("username") as string;
         const accountNumber = formData.get("accountNumber") as string;
         try {
-            
+            setLoading(true);
             const response = await axios.post(`${import.meta.env.VITE_LOGIN_URL}`, {
                 email,
                 password,
@@ -22,6 +24,8 @@ export default function Login(){
             navigate("/Home");
         } catch (error) {
             console.error("Login failed:", error);
+        } finally {
+            setLoading(false);
         }
     }
     return(
@@ -38,27 +42,29 @@ export default function Login(){
             <form  onSubmit={handleLogin}>
                 <div className="flex flex-col gap-2 mb-4">
                     <label htmlFor="">Username</label>
-                    <input className="p-4  border-2 border-neutral-700 rounded" name="username" required type="text" />
+                    <input disabled={loading} className="p-4  border-2 border-neutral-700 rounded" name="username" required type="text" />
                 </div>
                 <div className="flex flex-col gap-2 mb-4">
                     <label htmlFor="">Account Number</label>
-                    <input className="p-4 border-2 border-neutral-700 rounded" name="accountNumber" required type="number" />
+                    <input disabled={loading} className="p-4 border-2 border-neutral-700 rounded" name="accountNumber" required type="number" />
                 </div>
                 <div className="flex flex-col gap-2 mb-4">
                     <label htmlFor="">Email</label>
-                    <input className="p-4 border-2 border-neutral-700 rounded" name="email" required type="email" />
+                    <input disabled={loading} className="p-4 border-2 border-neutral-700 rounded" name="email" required type="email" />
                 </div>
                 <div className="flex flex-col gap-2 mb-4">
                     <label htmlFor="">Password</label>
-                    <input className="p-4 border-2 border-neutral-700 rounded" name="password" required type="password" />
+                    <input disabled={loading} className="p-4 border-2 border-neutral-700 rounded" name="password" required type="password" />
                 </div>
 
-                <button className="w-full mt-8 p-4 border-2 rounded text-xl text-blue-950 border-blue-900">Sign In</button>
+                <button disabled={loading} className="w-full mt-8 p-4 border-2 rounded text-xl text-blue-950 border-blue-900 cursor-pointer hover:bg-blue-700 hover:text-white transition delay-75">
+                    {loading ? "Signing In..." : "Sign In"}
+                </button>
             </form>
 
             <div className="flex mt-8">
-                <button className="text-center  w-full  cursor-pointer">Forgot Password?</button>
-                <Link to="/Register" className="text-center w-full cursor-pointer">Create Account</Link>
+                <button disabled={loading} className="text-center  w-full  cursor-pointer hover:bg-blue-700 hover:text-white transition delay-200 py-2 rounded">Forgot Password?</button>
+                <Link to="/Register" className="text-center w-full cursor-pointer hover:bg-blue-700 hover:text-white transition delay-200 py-2 rounded">Create Account</Link>
             </div>
             </section>
         </section>
