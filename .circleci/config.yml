@@ -8,7 +8,7 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:9.0
 
-    working_directory: ~/project
+    working_directory: ~/project/BankApi
 
     steps:
       - checkout
@@ -22,8 +22,6 @@ jobs:
       - run:
           name: Begin Sonar Analysis
           command: |
-            export PATH="$PATH:/root/.dotnet/tools"
-
             dotnet sonarscanner begin \
               /k:"GMotlhamme_ClarityCapitalBankInc" \
               /o:"claritycapitalbank" \
@@ -33,23 +31,18 @@ jobs:
       - run:
           name: Restore Backend
           command: dotnet restore
-          working_directory: BankApi
 
       - run:
           name: Build Backend
           command: dotnet build --configuration Release --no-restore
-          working_directory: BankApi
 
       - run:
           name: Run Backend Tests
           command: dotnet test --configuration Release --no-build
-          working_directory: BankApi
 
       - run:
           name: End Sonar Analysis
           command: |
-            export PATH="$PATH:/root/.dotnet/tools"
-
             dotnet sonarscanner end \
               /d:sonar.token="$SONAR_TOKEN"
 
