@@ -1,46 +1,78 @@
-# This config was automatically generated from your source code
-# Stacks detected: cicd:github-actions:.github/workflows,deps:node:frontend
 version: 2.1
+
 orbs:
-  node: circleci/node@5
+  node: circleci/node@5.2.0
+
 jobs:
-  build-node:
-    # Build node project
+  build-backend:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:9.0
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install SonarScanner
+          command: |
+            dotnet tool install --global dotnet-sonarscanner
+            echo 'export PATH="$PATH:/root/.dotnet/tools"' >> $BASH_ENV
+
+      - run:
+          name: Begin Sonar Analysis
+          command: |
+            export PATH="$PATH:/root/.dotnet/tools"
+
+            dotnet sonarscanner begin \
+              /k:"GMotlhamme_ClarityCapitalBankInc" \
+              /o:"claritycapitalbank" \
+              /d:sonar.host.url="https://sonarcloud.io" \
+              /d:sonar.token="$SONAR_TOKEN"
+
+      - run:
+          name: Restore Backend
+          command: dotnet restore
+          working_directory: BankApi
+
+      - run:
+          name: Build Backend
+          command: dotnet build --configuration Release --no-restore
+          working_directory: BankApi
+
+      - run:
+          name: Run Backend Tests
+          command: dotnet test --configuration Release --no-build
+          working_directory: BankApi
+
+      - run:
+          name: End Sonar Analysis
+          command: |
+            export PATH="$PATH:/root/.dotnet/tools"
+
+            dotnet sonarscanner end \
+              /d:sonar.token="$SONAR_TOKEN"
+
+  build-frontend:
     executor: node/default
+
     working_directory: ~/project/frontend
+
     steps:
       - checkout:
           path: ~/project
+
       - node/install-packages:
           pkg-manager: npm
+
       - run:
+          name: Build Frontend
           command: npm run build
-      - run:
-          name: Create the ~/artifacts directory if it doesn't exist
-          command: mkdir -p ~/artifacts
-      # Copy output to artifacts dir
-      - run:
-          name: Copy artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
-      - store_artifacts:
-          path: ~/artifacts
-          destination: node-build
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
-      - run:
-          name: found github actions config
-          command: ':'
+
 workflows:
-  build:
+  version: 2
+
+  build-and-analyze:
     jobs:
-      - build-node
-    # - deploy:
-    #     requires:
-    #       - build-node
+      - build-backend
+      - build-frontend
