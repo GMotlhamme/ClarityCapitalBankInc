@@ -9,7 +9,7 @@ namespace BankApi.Models.DTO
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only letters allowed")]
         public string Username { get; set; }
         
-        [RegularExpression(@"^\d{10,12}$", ErrorMessage = "Invalid")]
+        [RegularExpression(@"^\d{10,12}$", ErrorMessage = "Invalid account number ensure the length of 10-12 characters")]
         public string AccountNumber { get; set; }
 
         public string? IdNumber { get; set; }
