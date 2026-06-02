@@ -15,6 +15,9 @@ export default function Landing() {
 
                             <Link className="border-2 border-blue-600 hover:bg-blue-700 cursor-pointer w-full text-start py-4 px-4 text-xl rounded transition delay-75 hover:text-white" to={"/Register"}>Sign Up</Link>
                             <Link className="border-2 border-blue-600 hover:bg-blue-700 cursor-pointer w-full text-start py-4 px-4 text-xl rounded transition delay-75 hover:text-white" to={"/Login"}>Log in</Link>
+                            <Link className="border-2 border-blue-600 hover:bg-blue-700 cursor-pointer w-full text-start py-4 px-4 text-xl rounded transition delay-75 hover:text-white" to={"/EmployeeLogin"}>Employee Portal</Link>
+                        
+                            
                         </div>
                     </div>
 

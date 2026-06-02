@@ -115,6 +115,43 @@ namespace BankApi.Controllers
             
 
         }
+        [HttpPost]
+        [Route("EmployeeLogin")]
+        public async Task<IActionResult> EmployeeLogin([FromBody] EmployeeLoginDTO dto)
+        {
+            var user =
+                await _userManager.FindByEmailAsync(dto.Email);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var validPassword =
+                BCrypt.Net.BCrypt.Verify(
+                    dto.Password,
+                    user.PasswordHash);
+
+            if (!validPassword)
+            {
+                return Unauthorized();
+            }
+
+            var roles =
+                await _userManager.GetRolesAsync(user);
+
+            if (!roles.Contains("Employee"))
+            {
+                return Unauthorized(
+                    "Not an employee"
+                );
+            }
+
+            return Ok(new
+            {
+                token = await _tokenService.CreateToken(user)
+            });
+        }
 
     }
 }
