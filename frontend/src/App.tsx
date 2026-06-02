@@ -5,6 +5,7 @@ import Register from "./Pages/Register"
 import PaymentGate from "./Pages/PaymentGate"
 import Landing from "./Pages/Landing"
 import Home from "./Pages/Home"
+import EmployeeLogin from "./Pages/EmployeeLogin";
 
 function App() {
 
@@ -15,10 +16,11 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
-
+          <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
 
           <Route path="/Home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/PaymentGate" element={<ProtectedRoute><PaymentGate /></ProtectedRoute>} />
+                  
 
 
         </Routes>
