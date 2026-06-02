@@ -3,7 +3,9 @@ using BankApi.Interfaces;
 using BankApi.Models.Domain;
 using BankApi.Models.DTO;
 using BCrypt.Net;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -117,40 +119,45 @@ namespace BankApi.Controllers
         }
         [HttpPost]
         [Route("EmployeeLogin")]
-        public async Task<IActionResult> EmployeeLogin([FromBody] EmployeeLoginDTO dto)
+        public async Task<IActionResult> EmployeeLogin([FromBody] EmployeeLoginRequestDTO dTO)
         {
-            var user =
-                await _userManager.FindByEmailAsync(dto.Email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByEmailAsync(dTO.Email);
 
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized("Invalid credentials");
             }
 
-            var validPassword =
-                BCrypt.Net.BCrypt.Verify(
-                    dto.Password,
-                    user.PasswordHash);
+            var validEmployee = await _userManager.IsInRoleAsync(user, "Employee"); ;
 
-            if (!validPassword)
+            if (!validEmployee) 
             {
-                return Unauthorized();
+                return BadRequest("Invalid credentials");
             }
 
-            var roles =
-                await _userManager.GetRolesAsync(user);
+            var verifiedPassword = BCrypt.Net.BCrypt.Verify(dTO.Password, user.PasswordHash);
+                
 
-            if (!roles.Contains("Employee"))
+            //if the password is wrong then we cut the function using this conditional
+            if (!verifiedPassword)
             {
-                return Unauthorized(
-                    "Not an employee"
-                );
+                return Unauthorized("Invalid credentials");
             }
 
-            return Ok(new
+
+            return Ok(new EmployeeLoginResponseDTO
             {
-                token = await _tokenService.CreateToken(user)
+                Username = user.UserName,
+                Email = user.Email,
+                Token = await _tokenService.CreateToken(user)
             });
+            
+
         }
 
     }
