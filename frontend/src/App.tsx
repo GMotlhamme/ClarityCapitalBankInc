@@ -6,6 +6,7 @@ import PaymentGate from "./Pages/PaymentGate"
 import Landing from "./Pages/Landing"
 import Home from "./Pages/Home"
 import EmployeeLogin from "./Pages/EmployeeLogin";
+import PendingPayments from "./Pages/PendingPayments";
 
 function App() {
 
@@ -20,9 +21,7 @@ function App() {
 
           <Route path="/Home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/PaymentGate" element={<ProtectedRoute><PaymentGate /></ProtectedRoute>} />
-                  
-
-
+          <Route path="/PendingPayments" element={<ProtectedRoute><PendingPayments /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </>

@@ -38,5 +38,7 @@ namespace BankApi.Models.Domain
 
         [ForeignKey("CustomerId")]
         public AppUser Customer { get; set; }
+
+        public string Status { get; set; } = "Pending";
     }
 }
