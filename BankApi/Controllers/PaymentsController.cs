@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BankApi.Data;
+using BankApi.Models.Domain;
+using BankApi.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BankApi.Data;
-using Microsoft.AspNetCore.Authorization;
-using BankApi.Models.Domain;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BankApi.Controllers
 {
@@ -31,17 +33,36 @@ namespace BankApi.Controllers
         }
 
         // GET: api/Payments/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Payment>> GetPayment(Guid id)
+        [HttpGet("{PaymentID}")]
+        public async Task<ActionResult<GetSinglePaymentResponseDTO>> GetPayment(Guid PaymentID)
         {
-            var payment = await _context.Payments.FindAsync(id);
+
+            var payment = await _context.Payments
+                                    .Include(p => p.Customer)
+                                    .Include(p => p.VerifiedByEmployee)
+                                    .FirstOrDefaultAsync(p => p.Id == PaymentID);
 
             if (payment == null)
             {
                 return NotFound();
             }
 
-            return payment;
+            var response = new GetSinglePaymentResponseDTO
+            {
+                Id = payment.Id,
+                Amount = payment.Amount,
+                Currency = payment.Currency,
+                SwiftCode = payment.SwiftCode,
+                CreatedAt = payment.CreatedAt,
+                IsVerified = payment.IsVerified,
+                BeneficiaryName = payment.BeneficiaryName,
+                CustomerName = payment.Customer.FullName,
+                CustomerEmail = payment.Customer.Email ?? "no email",
+                VerifiedAt = payment.VerifiedAt,
+                VerifiedBy = payment.VerifiedByEmployeeId ?? "not verified yet"
+            };
+
+            return Ok(response);
         }
 
         // PUT: api/Payments/5
