@@ -68,14 +68,32 @@ namespace BankApi.Controllers
         // PUT: api/Payments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPayment(Guid id, Payment payment)
+        public async Task<IActionResult> ReviewPayment(Guid id, VerifyPaymentDTO paymentDto)
         {
-            if (id != payment.Id)
+
+            //find user id from token
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
             {
-                return BadRequest();
+                return Unauthorized("No token");
             }
 
-            _context.Entry(payment).State = EntityState.Modified;
+            var payment = await _context.Payments.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (payment == null) 
+            { 
+                return NotFound(); 
+            }
+
+            if (payment.IsVerified != null)
+            {
+                return BadRequest("Payment has already been reviewed.");
+            }
+            payment.IsVerified = paymentDto.IsVerified;
+            payment.VerifiedByEmployeeId = userId;
+            payment.VerifiedAt = DateTime.UtcNow;
+
 
             try
             {
@@ -92,24 +110,6 @@ namespace BankApi.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
-        }
-
-        
-
-        // DELETE: api/Payments/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePayment(Guid id)
-        {
-            var payment = await _context.Payments.FindAsync(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
-
-            _context.Payments.Remove(payment);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
