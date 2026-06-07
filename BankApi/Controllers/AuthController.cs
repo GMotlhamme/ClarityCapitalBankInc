@@ -125,6 +125,7 @@ namespace BankApi.Controllers
                 return BadRequest(ModelState);
             }
 
+
             var user = await _userManager.FindByEmailAsync(dTO.Email);
 
             if (user == null)
