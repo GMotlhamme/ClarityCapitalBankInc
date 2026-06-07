@@ -30,7 +30,8 @@ jobs:
               /k:"GMotlhamme_ClarityCapitalBankInc" \
               /o:"claritycapitalbank" \
               /d:sonar.host.url="https://sonarcloud.io" \
-              /d:sonar.token="$SONAR_TOKEN"
+              /d:sonar.token="$SONAR_TOKEN" \
+              /d:sonar.scm.disabled=true
 
       - run:
           name: Restore Backend
