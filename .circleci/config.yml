@@ -14,6 +14,10 @@ jobs:
       - checkout
 
       - run:
+          name: Fetch full git history for Sonar blame
+          command: git fetch --unshallow || true
+
+      - run:
           name: Install SonarScanner
           command: |
             dotnet tool install --global dotnet-sonarscanner
