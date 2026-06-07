@@ -11,11 +11,20 @@ jobs:
     working_directory: ~/project/BankApi
 
     steps:
-      - checkout
+      - checkout 
 
+      - run:
+          name: Check if Repository is Shallow
+          command: git rev-parse --is-shallow-repository
+          
       - run:
           name: Fetch full git history for Sonar blame
           command: git fetch --unshallow || true
+          
+      - run:
+          name: Check Git Repository
+          command: git fsck --full
+
 
       - run:
           name: Install SonarScanner
