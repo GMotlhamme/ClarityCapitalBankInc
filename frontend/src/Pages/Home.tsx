@@ -8,7 +8,8 @@ interface Transaction {
     payeeAccountNumber: string;
     createdAt?: string;
     beneficiaryName?: string;
-    verified: boolean;
+    // verified: boolean;
+    status: string;
 }
 
  export default function Home()  {
@@ -18,38 +19,37 @@ interface Transaction {
 
     
 
-    const fetchTransactions = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_PAYMENT_URL}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
-
-            const data = await response.json();
-            setTransactions(data);
-            console.log("Fetched transactions:", data);
-        } catch (error) {
-            console.error("Error fetching transactions", error);
-        } finally {
-            setLoading(false);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        
+        if (!token) {
+            navigate("/Login");
+            return;
         }
-    };
-     useEffect(() => {
-         const token = localStorage.getItem("token");
+        const fetchTransactions = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_PAYMENT_URL}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                });
+    
+                const data = await response.json();
+                setTransactions(data);
+                console.log("Fetched transactions:", data);
+            } catch (error) {
+                console.error("Error fetching transactions", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-         if (!token) {
-             navigate("/Login");
-             return;
-         }
-
-         // eslint-disable-next-line react-hooks/set-state-in-effect
          fetchTransactions();
-     }, []);
+     }, [navigate]);
 
     const handleLogout = () => {
         localStorage.clear();
-        navigate("/Login");
+        navigate("/");
     };
 
     return (
@@ -101,7 +101,7 @@ interface Transaction {
                                 <th>Currency</th>
                                 <th>Payee</th>
                                 <th>Date</th>
-                                <th>Verified</th>
+                                <th>Status</th>
                                 
                             </tr>
                         </thead>
@@ -112,7 +112,7 @@ interface Transaction {
                                     <td>{t.currency}</td>
                                     <td>{t.beneficiaryName}</td>
                                     <td>{t.createdAt?.split("T")[0]}</td>
-                                    <td>{t.verified ? "Yes" : "Processing"}</td>
+                                    <td>{t.status}</td>
                                 </tr>
                             )).toReversed()}
                         </tbody>

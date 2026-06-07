@@ -31,14 +31,14 @@ export default function EmployeeLogin() {
             );
 
             localStorage.setItem(
-                "employeeToken",
+                "token",
                 response.data.token
             );
 
             navigate("/EmployeeDashboard");
 
-        } catch {
-
+        } catch (error) {
+            console.log(error);
             setError("Invalid employee credentials");
 
         } finally {

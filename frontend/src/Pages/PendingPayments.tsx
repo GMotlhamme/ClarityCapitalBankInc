@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 interface Payment {
     id: number;
@@ -10,29 +11,44 @@ interface Payment {
 }
 
 export default function PendingPayments() {
-
+    const navigate = useNavigate();
     const [payments, setPayments] = useState<Payment[]>([]);
 
     // Return data instead of calling setPayments directly
     async function loadPayments(): Promise<Payment[]> {
-        const response =
-            await axios.get<Payment[]>(
-                `${import.meta.env.VITE_API_URL}/Employee/PendingPayments`
-            );
+        try{
 
-        return response.data;
+            const response =
+            await axios.get<Payment[]>(
+                `${import.meta.env.VITE_PENDING_PAYMENTS_URL}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Error loading payments", error);
+            throw error; // rethrow to be caught in the caller
+        }
+
     }
 
     async function verifyPayment(
         paymentId: number,
         approved: boolean
     ) {
-
         await axios.put(
-            `${import.meta.env.VITE_API_URL}/Employee/VerifyPayment`,
+            `${import.meta.env.VITE_VERIFY_PAYMENT_URL}`,
             {
                 paymentId,
                 approved
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
             }
         );
 
@@ -40,6 +56,7 @@ export default function PendingPayments() {
         try {
             const data = await loadPayments();
             setPayments(data);
+            navigate("/EmployeeDashboard"); 
         } catch (err) {
             console.error(err);
         }

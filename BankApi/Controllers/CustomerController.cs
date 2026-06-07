@@ -45,14 +45,14 @@ namespace BankApi.Controllers
                 return NotFound("No transactions found");
             }
 
-            var response = userPaymentHistory.Select(p => new PaymentResponseDTO
+            var response = userPaymentHistory.Select(p => new PaymentResponseDto
             {
                 Id = p.Id,
                 Amount = p.Amount,
                 Currency = p.Currency,
                 SwiftCode = p.SwiftCode,
                 CreatedAt = p.CreatedAt,
-                IsVerified = p.IsVerified,
+                Status = p.Status,
                 BeneficiaryName = p.BeneficiaryName
             });
 
@@ -62,7 +62,7 @@ namespace BankApi.Controllers
 
         [HttpPost]
         [Route("me")]
-        public async Task<IActionResult> NewPayment([FromBody] CreatePaymentDTO dTO)
+        public async Task<IActionResult> NewPayment([FromBody] CreatePaymentDto dTO)
         {
             if (!ModelState.IsValid)
             {

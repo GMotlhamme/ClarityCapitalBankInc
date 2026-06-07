@@ -11,19 +11,17 @@ namespace BankApi.Models.Domain
         [Column(TypeName = "decimal(18, 6)")]
         public decimal Amount { get; set; }
 
-        public string Currency { get; set; }
+        public string Currency { get; set; } = string.Empty;
 
         public string Provider { get; set; } = "SWIFT";
 
-        public string PayeeAccountNumber { get; set; } 
+        public string PayeeAccountNumber { get; set; } = string.Empty;
+        public string SwiftCode { get; set; } = string.Empty;
 
-        public string SwiftCode { get; set; }
-
-        public string BeneficiaryName { get; set; }
+        public string BeneficiaryName { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public bool? IsVerified { get; set; }
 
         //Employee relationship
         public string? VerifiedByEmployeeId { get; set; }
@@ -34,10 +32,10 @@ namespace BankApi.Models.Domain
         public DateTime? VerifiedAt { get; set; }
 
         //Customer Relationship
-        public string CustomerId { get; set; }
+        public string CustomerId { get; set; } = string.Empty;
 
         [ForeignKey("CustomerId")]
-        public AppUser Customer { get; set; }
+        public AppUser? Customer { get; set; }
 
         public string Status { get; set; } = "Pending";
     }
