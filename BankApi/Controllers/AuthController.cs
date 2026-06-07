@@ -19,7 +19,7 @@ namespace BankApi.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
-
+        private readonly string InvalidCredentials = "Invalid credentials";
         public AuthController(UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
@@ -94,7 +94,7 @@ namespace BankApi.Controllers
 
             if (user == null) 
             {
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(InvalidCredentials);
             }
 
 
@@ -104,7 +104,7 @@ namespace BankApi.Controllers
             //if the password is wrong then we cut the function using this conditional
             if (!verifiedPassword)
             {
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(InvalidCredentials);
             }
 
 
@@ -130,14 +130,14 @@ namespace BankApi.Controllers
 
             if (user == null)
             {
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(InvalidCredentials);
             }
 
-            var validEmployee = await _userManager.IsInRoleAsync(user, "Employee"); ;
+            var validEmployee = await _userManager.IsInRoleAsync(user, "Employee");
 
             if (!validEmployee) 
             {
-                return BadRequest("Invalid credentials");
+                return BadRequest(InvalidCredentials);
             }
 
             var verifiedPassword = BCrypt.Net.BCrypt.Verify(dTO.Password, user.PasswordHash);
@@ -146,7 +146,7 @@ namespace BankApi.Controllers
             //if the password is wrong then we cut the function using this conditional
             if (!verifiedPassword)
             {
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(InvalidCredentials);
             }
 
 

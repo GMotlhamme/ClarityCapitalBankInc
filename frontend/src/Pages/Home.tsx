@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-interface Transaction {
+export interface Transaction {
     id: string;
     amount: number;
     currency: string;
     payeeAccountNumber: string;
     createdAt?: string;
     beneficiaryName?: string;
-    // verified: boolean;
     status: string;
 }
 
@@ -20,12 +19,7 @@ interface Transaction {
     
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
         
-        if (!token) {
-            navigate("/Login");
-            return;
-        }
         const fetchTransactions = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_PAYMENT_URL}`, {
