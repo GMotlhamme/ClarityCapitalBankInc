@@ -14,6 +14,6 @@ export default function ProtectedRoute({ children }: { children: JSX.Element }) 
     }, []);
 
     if (isAuthenticated === null) return <div>Loading...</div>; // Still checking
-    if (!isAuthenticated) return <Navigate to="/Login" replace />; // Not logged in
+    if (!isAuthenticated) return <Navigate to="/" replace />; // Not logged in
     return children; // Logged in, show page
 }

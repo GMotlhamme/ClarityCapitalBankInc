@@ -16,8 +16,12 @@ namespace BankApi.Services
         public TokenService(IConfiguration config, UserManager<AppUser> userManager)
         {
             _config = config;
+            var signingKey =
+                    Environment.GetEnvironmentVariable("JWT_KEY")
+                    ?? _config["Jwt:SigningKey"]
+                    ?? throw new Exception("JWT signing key not configured");
             _userManager = userManager;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
         }
 
         

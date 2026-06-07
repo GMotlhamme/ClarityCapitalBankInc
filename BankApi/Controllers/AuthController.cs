@@ -28,7 +28,7 @@ namespace BankApi.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisteringDTO registeringDTO)
+        public async Task<IActionResult> Register([FromBody] RegisteringDto registeringDTO)
         {
 
             try
@@ -81,7 +81,7 @@ namespace BankApi.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginCustomerRequestDTO dTO)
+        public async Task<IActionResult> Login([FromBody] LoginCustomerRequestDto dTO)
         {
             if (!ModelState.IsValid)
             {
@@ -108,10 +108,9 @@ namespace BankApi.Controllers
             }
 
 
-            return Ok(new LoginCustomerResponseDTO
+            return Ok(new LoginCustomerResponseDto
             {
-                Username = user.UserName,
-                Email = user.Email,
+                
                 Token = await _tokenService.CreateToken(user)
             });
             
@@ -119,7 +118,7 @@ namespace BankApi.Controllers
         }
         [HttpPost]
         [Route("EmployeeLogin")]
-        public async Task<IActionResult> EmployeeLogin([FromBody] EmployeeLoginRequestDTO dTO)
+        public async Task<IActionResult> EmployeeLogin([FromBody] EmployeeLoginRequestDto dTO)
         {
             if (!ModelState.IsValid)
             {
@@ -150,10 +149,9 @@ namespace BankApi.Controllers
             }
 
 
-            return Ok(new EmployeeLoginResponseDTO
+            return Ok(new EmployeeLoginResponseDto
             {
-                Username = user.UserName,
-                Email = user.Email,
+                
                 Token = await _tokenService.CreateToken(user)
             });
             
