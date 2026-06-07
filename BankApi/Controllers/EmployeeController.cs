@@ -62,6 +62,8 @@ public class EmployeeController : ControllerBase
         }
 
         payment.Status = dto.Approved ? "Approved" : "Rejected";
+        payment.VerifiedByEmployeeId = userId;
+        payment.VerifiedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 
