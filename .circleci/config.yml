@@ -45,6 +45,10 @@ jobs:
       - run:
           name: Restore Backend
           command: dotnet restore
+          
+      - run:
+          name: Check NuGet vulnerabilities
+          command: dotnet list package --vulnerable
 
       - run:
           name: Build Backend
@@ -75,6 +79,10 @@ jobs:
 
       - node/install-packages:
           pkg-manager: npm
+
+      - run:
+          name: Run npm audit
+          command: npm audit --audit-level=high
 
       - run:
           name: Build Frontend
