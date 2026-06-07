@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-
+import { Link, useNavigate } from "react-router";
 interface Transaction {
     id: string;
     amount: number;
@@ -11,41 +10,38 @@ interface Transaction {
     // verified: boolean;
     status: string;
 }
-
- export default function Home()  {
+export default function EmployeeDashboard() {
     const navigate = useNavigate();
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
 
-    
-
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        
-        if (!token) {
-            navigate("/Login");
-            return;
-        }
-        const fetchTransactions = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_PAYMENT_URL}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                });
-    
-                const data = await response.json();
-                setTransactions(data);
-                console.log("Fetched transactions:", data);
-            } catch (error) {
-                console.error("Error fetching transactions", error);
-            } finally {
-                setLoading(false);
+            const token = localStorage.getItem("token");
+            
+            if (!token) {
+                navigate("/Login");
+                return;
             }
-        };
-
-         fetchTransactions();
-     }, [navigate]);
+            const fetchTransactions = async () => {
+                try {
+                    const response = await fetch(`${import.meta.env.VITE_All_PAYMENTS_URL}`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                    });
+        
+                    const data = await response.json();
+                    setTransactions(data);
+                    console.log("Fetched transactions:", data);
+                } catch (error) {
+                    console.error("Error fetching transactions", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+    
+             fetchTransactions();
+         }, [navigate]);
 
     const handleLogout = () => {
         localStorage.clear();
@@ -53,13 +49,24 @@ interface Transaction {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
+
+        // <div className="p-8">
+
+            
+
+            <div className="min-h-screen bg-gray-100 p-6">
 
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-gray-800">
-                    Dashboard
+                    Employee Dashboard
                 </h1>
+            <Link
+                to="/PendingPayments"
+                className="border-2 border-blue-900 px-6 py-4 rounded hover:bg-blue-900 hover:text-white"
+            >
+                View Pending Payments
+            </Link>
 
                 <button
                     onClick={handleLogout}
@@ -69,20 +76,12 @@ interface Transaction {
                 </button>
             </div>
 
-            {/* Create Transaction */}
-            <div className="mb-6">
-                <button
-                    onClick={() => navigate("/PaymentGate")}
-                    className="border-2 border-blue-700 text-blue-900 cursor-pointer hover:bg-blue-700 hover:text-white transition delay-75 px-4 py-2 rounded"
-                >
-                     Create Transaction
-                </button>
-            </div>
+            
 
             {/* Transactions Section */}
             <div className="bg-white shadow-md rounded-xl p-4">
                 <h2 className="text-lg font-semibold mb-4">
-                    Your Transactions
+                    All Transactions
                 </h2>
 
                 {loading ? (
@@ -123,8 +122,7 @@ interface Transaction {
            
 
         </div>
+        // </div>
+
     );
-};
-
-
-
+}

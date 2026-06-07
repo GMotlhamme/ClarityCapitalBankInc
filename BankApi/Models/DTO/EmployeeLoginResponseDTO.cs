@@ -1,8 +1,7 @@
 ﻿namespace BankApi.Models.DTO
 {
-    public class LoginCustomerResponseDto
+    public class EmployeeLoginResponseDto
     {
         public string Token { get; set; } = string.Empty;
-
     }
 }

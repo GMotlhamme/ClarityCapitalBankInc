@@ -15,20 +15,26 @@ export default function Landing() {
 
                             <Link className="border-2 border-blue-600 hover:bg-blue-700 cursor-pointer w-full text-start py-4 px-4 text-xl rounded transition delay-75 hover:text-white" to={"/Register"}>Sign Up</Link>
                             <Link className="border-2 border-blue-600 hover:bg-blue-700 cursor-pointer w-full text-start py-4 px-4 text-xl rounded transition delay-75 hover:text-white" to={"/Login"}>Log in</Link>
+                            <Link className="border-2 border-blue-600 hover:bg-blue-700 cursor-pointer w-full text-start py-4 px-4 text-xl rounded transition delay-75 hover:text-white" to={"/EmployeeLogin"}>Employee Portal</Link>
+                        
+                            
                         </div>
                     </div>
 
                     <section className="flex p-8 gap-4 ">
                         <div className="flex flex-col gap-2 text-center">
-                            <i className="bi bi-globe text-4xl"></i>
+                            {/* <i className="bi bi-globe text-4xl"></i> */}
+                            <img src="./globe.png" className="object-contain h-12" alt="global" />
                             <p>Global SWIFT Transfers</p>
                         </div>
                         <div className="flex flex-col gap-2 text-center">
-                            <i className="bi bi-lock text-4xl"></i>
+                            {/* <i className="bi bi-lock text-4xl"></i> */}
+                            <img src="./Lock.png" className="object-contain h-12" alt="security" />
                             <p>Advanced Security</p>
                         </div>
                         <div className="flex flex-col justify-center gap-2 text-center">
-                            <i className="bi bi-clock-history text-4xl"></i>
+                            {/* <i className="bi bi-clock-history text-4xl"></i> */}
+                            <img src="./clock.png" className="object-contain h-12" alt="management" />
                             <p >24/7 Management</p>
                         </div>
                     </section>

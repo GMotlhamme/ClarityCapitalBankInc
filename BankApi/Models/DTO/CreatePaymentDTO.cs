@@ -2,7 +2,7 @@
 
 namespace BankApi.Models.DTO
 {
-    public class CreatePaymentDTO
+    public class CreatePaymentDto
     {
         
         [Required]
@@ -11,19 +11,19 @@ namespace BankApi.Models.DTO
 
         [Required]
         [RegularExpression(@"^[A-Z]{3}$")] 
-        public string Currency { get; set; }
+        public string Currency { get; set; } = string.Empty;
 
         [Required]
         [StringLength(34)]
-        public string PayeeAccountNumber { get; set; }
+        public string PayeeAccountNumber { get; set; } = string.Empty;
 
         [Required]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only letters allowed")]
-        public string BeneficiaryName { get; set; }
+        public string BeneficiaryName { get; set; } = string.Empty;
 
         [Required]
         [RegularExpression(@"^[A-Z0-9]{8,11}$")] // SWIFT format
-        public string SwiftCode { get; set; }
-        
+        public string SwiftCode { get; set; } = string.Empty;
+
     }
 }
