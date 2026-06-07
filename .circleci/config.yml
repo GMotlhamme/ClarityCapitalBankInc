@@ -51,8 +51,12 @@ jobs:
           command: dotnet build --configuration Release --no-restore
 
       - run:
-          name: Run Backend Tests
-          command: dotnet test --configuration Release --no-build
+          name: Run Tests with Coverage
+          command: |
+            dotnet test --configuration Release --no-build \
+              /p:CollectCoverage=true \
+              /p:CoverletOutputFormat=cobertura \
+              /p:CoverletOutput=./TestResults/coverage.xml
 
       - run:
           name: End Sonar Analysis
