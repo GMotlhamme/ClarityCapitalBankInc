@@ -75,25 +75,28 @@ export default function EmployeeLogin() {
                     }
 
                     <div className="mb-4">
-                        <label>Email</label>
-
+                        <label>
+                            Email
                         <input
                             type="email"
                             name="email"
                             required
                             className="w-full p-4 border-2 border-neutral-700 rounded"
-                        />
+                            />
+                        </label>
                     </div>
 
                     <div className="mb-4">
-                        <label>Password</label>
+                        <label>
 
+                            Password
                         <input
                             type="password"
                             name="password"
                             required
                             className="w-full p-4 border-2 border-neutral-700 rounded"
-                        />
+                            />
+                        </label>
                     </div>
 
                     <button

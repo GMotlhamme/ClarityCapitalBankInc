@@ -1,28 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-interface Transaction {
-    id: string;
-    amount: number;
-    currency: string;
-    payeeAccountNumber: string;
-    createdAt?: string;
-    beneficiaryName?: string;
-    // verified: boolean;
-    status: string;
-}
+import type { Transaction } from "./Home";
+// interface Transaction {
+//     id: string;
+//     amount: number;
+//     currency: string;
+//     payeeAccountNumber: string;
+//     createdAt?: string;
+//     beneficiaryName?: string;
+//     status: string;
+// }
 export default function EmployeeDashboard() {
     const navigate = useNavigate();
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [payments, setPayments] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-            const token = localStorage.getItem("token");
             
-            if (!token) {
-                navigate("/Login");
-                return;
-            }
-            const fetchTransactions = async () => {
+            const fetchPayments = async () => {
                 try {
                     const response = await fetch(`${import.meta.env.VITE_All_PAYMENTS_URL}`, {
                         headers: {
@@ -31,16 +26,16 @@ export default function EmployeeDashboard() {
                     });
         
                     const data = await response.json();
-                    setTransactions(data);
-                    console.log("Fetched transactions:", data);
+                    setPayments(data);
+                    console.log("Fetched payments:", data);
                 } catch (error) {
-                    console.error("Error fetching transactions", error);
+                    console.error("Error fetching payments", error);
                 } finally {
                     setLoading(false);
                 }
             };
     
-             fetchTransactions();
+             fetchPayments();
          }, [navigate]);
 
     const handleLogout = () => {
@@ -78,7 +73,7 @@ export default function EmployeeDashboard() {
 
             
 
-            {/* Transactions Section */}
+            {/* payments Section */}
             <div className="bg-white shadow-md rounded-xl p-4">
                 <h2 className="text-lg font-semibold mb-4">
                     All Transactions
@@ -88,7 +83,7 @@ export default function EmployeeDashboard() {
                     <div className="flex justify-center">
                         <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
                     </div>
-                ) : transactions.length === 0 ? (
+                ) : payments.length === 0 ? (
                     <p className="text-gray-500 text-center">
                         No transactions found.
                     </p>
@@ -105,7 +100,7 @@ export default function EmployeeDashboard() {
                             </tr>
                         </thead>
                         <tbody>
-                            {transactions.map((t) => (
+                            {payments.map((t) => (
                                 <tr key={t.id} className="border-b">
                                     <td className="py-2">{t.amount}</td>
                                     <td>{t.currency}</td>
